@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title>Users New</title>
+        {% load staticfiles %}
+        <style>
+            div.quotable-Quotes {
+               margin-bottom: 10px;
+            }
+            div.favorites {
+                float: right;
+            }
+            a.add-button {
+    
+            }
+            a.user-name{
+            }
+            div.inner-container {
+                margin-bottom: 10px;
+            }
+        
+        </style>
+    </head>
+    <style>
+        
+    </style>
+    <body>
+       <div class="container">
+            
+            <div class="alert alert-success" >
+                <a href="/logout" class="btn btn-info btn-lg pull-right  btn-danger">
+                    <span class="glyphicon glyphicon-log-out"></span> Log out
+                </a>
+                <h2>Welcome, {{ request.session.name}}!</h2>
+            </div>
+            
+
+            <div class="quotable-Quotes col-sm-6 row"> 
+                <legend>Quotable Quotes</legend>
+                <div class="col"> 
+                    {% for quote in all_quotes %} 
+                    <div class= "inner-container">
+                        <p>{{quote.name}}: {{quote.message}}</p>
+                        <a href="/favorite/{{quote.id}}" class="add-button btn btn-info btn-lg">
+                            <span class=""></span>Add to My List
+                        </a>
+                        <a href="/users/{{quote.user_id}}" class="user-name">Postedy by: {{quote.user.name}}</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="favorites col-sm-6 row">
+                <legend>Your Favorites</legend> 
+                <div class="col">
+                    
+                    {% for quote in favorite_quote %} 
+                    <p>
+                        <p>{{quote.quote.name}}: {{quote.quote.message}}</p>
+                        <a href="/remove/{{quote.id}}" class="btn btn-info btn-lg btn-danger">
+                            <span class=""></span>Remove
+                        </a>
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-sm-8 row">
+                <p>Contibute a Quote</p>
+                <form action="/create" method="post">
+                    {% csrf_token %}
+                    <label for="name">Quoted By:</label>
+                    <input type="text" name="name" id="name" class="form-control">
+                    
+                    <label for="message">Message:</label>
+                    <textarea name="message" id="message" class="form-control" ></textarea>
+                    
+                    <input type="submit" type="submit" value="Submit">
+                </form>
+            </div>
+
+            <div class="col-sm-offset-2 col-sm-8">
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <div class="alert alert-danger alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    
+    </body>
+</html>
